@@ -1,6 +1,5 @@
 package alevor87.android.thor.ui
 
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,12 +14,16 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.KeyboardArrowLeft
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -64,12 +67,31 @@ fun CalendarButton(
     dayNumber: String,
     listForIdentifyingColors: List<String>,
 ) {
-    TextButton(onClick = { /*TODO*/ }) {
-        Text(
-            text = dayNumber,
-            color = if (dayNumber in listForIdentifyingColors) Color.Red
-            else Color.Unspecified
+    var selectedOption by remember { mutableStateOf(false) }
+    val color = if (selectedOption) Color.LightGray else Color.Transparent
+    val isEnabled = when (dayNumber) {
+        in listForIdentifyingColors -> false
+        " " -> false
+        else -> true
+    }
+
+    TextButton(
+        onClick = { selectedOption = !selectedOption },
+        enabled = isEnabled,
+        colors = ButtonDefaults.textButtonColors(
+            containerColor = color
         )
+    ) {
+        if (dayNumber !in listForIdentifyingColors) {
+            Text(
+                text = dayNumber
+            )
+        } else {
+            Text(
+                text = dayNumber,
+                color = Color.Red
+            )
+        }
     }
 }
 

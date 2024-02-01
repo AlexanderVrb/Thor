@@ -70,7 +70,8 @@ class CalendarViewModel : ViewModel() {
             .map<Any, String> { it.toString() }
     }
 
-    private val baseUpdateUi: (Int) -> (Int) -> (Triple<String, Int, List<Int>>) -> (List<String>) -> Unit =
+    private val baseUpdateUi:
+                (Int) -> (Int) -> (Triple<String, Int, List<Int>>) -> (List<String>) -> Unit =
         { year ->
             { number ->
                 { month ->
@@ -97,10 +98,9 @@ class CalendarViewModel : ViewModel() {
     private fun updateMonth(month: Triple<String, Int, List<Int>>) =
         baseUpdateUi(_uiState.value.year)(_uiState.value.numberOfMonth)(month)(_uiState.value.listOfDaysForCalendar)
 
-    private fun updateListOfDaysForCalendar() =
-        baseUpdateUi(_uiState.value.year)(_uiState.value.numberOfMonth)(_uiState.value.month)(
-            concatenateLists()
-        )
+    private fun updateListOfDays() =
+        baseUpdateUi(_uiState.value.year)(_uiState.value.numberOfMonth)(_uiState.value.month)(concatenateLists())
+
 
     fun changeYear(yearPlus: Boolean) {
 
@@ -119,8 +119,7 @@ class CalendarViewModel : ViewModel() {
         if (_uiState.value.year in leapYears && _uiState.value.numberOfMonth == 1) {
             updateMonth(months[12])
         } else updateMonth(months[_uiState.value.numberOfMonth])
-
-        updateListOfDaysForCalendar()
+        updateListOfDays()
     }
 
     fun updateMonth(monthPlus: Boolean) {
@@ -147,7 +146,6 @@ class CalendarViewModel : ViewModel() {
         } else {
             updateMonth(months[_uiState.value.numberOfMonth])
         }
-
-        updateListOfDaysForCalendar()
+        updateListOfDays()
     }
 }
